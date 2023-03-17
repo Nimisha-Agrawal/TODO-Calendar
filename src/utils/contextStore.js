@@ -9,3 +9,10 @@ export const calendarDateFormatToInputDate = (calendarDate) => {
     return `${year}-${month}-${date}`;
 }
 
+export const If = function ({ test, children }) {
+    if (test === false) {
+        return null;
+    }
+    return children;
+}
+

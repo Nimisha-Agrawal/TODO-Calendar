@@ -8,14 +8,14 @@ import "../../App.css";
 
 const AddTaskModal = ({ showModal, onClose, updateTaskList }) => {
     const { date: calendarDateCurrentlySelected, todoList } = useContext(AppContext);
-
+    let previousTaskAddedForSelectedDate;
     // useEffect(() => {
     //     const dateControl = document.getElementById('dateInput');
     //     dateControl.value = calendarDateFormatToInputDate(calendarDateCurrentlySelected);
     // }, [calendarDateCurrentlySelected])
+    const inputDateCurrentlySelected = calendarDateCurrentlySelected && calendarDateFormatToInputDate(calendarDateCurrentlySelected);
 
-    const inputDateCurrentlySelected = calendarDateFormatToInputDate(calendarDateCurrentlySelected);
-    let previousTaskAddedForSelectedDate;
+
     const calculatePreviousTask = () => {
         if (todoList.length > 0) {
             for (let task of todoList) {
@@ -70,7 +70,7 @@ const AddTaskModal = ({ showModal, onClose, updateTaskList }) => {
 
             <Modal.Body>
                 <Form>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Group className="mb-3" controlId="taskControl">
                         <Form.Label>Enter Title</Form.Label>
                         <Form.Control
                             type="text"
@@ -80,21 +80,22 @@ const AddTaskModal = ({ showModal, onClose, updateTaskList }) => {
                             required
                             autoFocus
                         />
-                        <span class="validity" />
                     </Form.Group>
                     <Form.Group
                         className="mb-3"
-                        controlId="exampleForm.ControlInput2"
+                        controlId="dateControl"
                     >
                         <Form.Label>Select Date</Form.Label>
-                        <Form.Control type="date" placeholder="Select Date" value={calendarDateFormatToInputDate(calendarDateCurrentlySelected)} min={calendarDateFormatToInputDate(new Date())} required />
-                        <span class="validity" />
+                        <Form.Control type="date" placeholder="Select Date" value={inputDateCurrentlySelected} min={calendarDateFormatToInputDate(new Date())} required />
+                        <Form.Text className="text-muted">
+                           You can't add tasks for past dates from now
+                        </Form.Text>
                     </Form.Group>
                 </Form>
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={saveValue}>Done</Button>
+                <Button variant="secondary" type="submit" onClick={saveValue}>Done</Button>
             </Modal.Footer>
         </Modal>
     );

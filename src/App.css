@@ -1,15 +1,15 @@
-html,
+/* html,
 body {
   height: 100%;
   width: 100%;
 }
-/*
+
 body {
   background: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
-} */
+}
 .modal {
   width: 500px;
   background: white;
@@ -79,4 +79,4 @@ body {
   position: absolute;
 }
 
-
+ */
