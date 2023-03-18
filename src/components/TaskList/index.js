@@ -1,40 +1,37 @@
 import { useContext } from "react";
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
 import CloseButton from 'react-bootstrap/CloseButton';
 
-import { AppContext } from "../../utils/contextStore";
-import { updatedTaskList } from "../../utils/contextStore";
+import { AppContext, getSortedTodoListForCurrentMonth } from "../../utils/contextStore";
 
 const TaskList = ({ setTodoList }) => {
     let { date, todoList } = useContext(AppContext);
 
-    todoList = updatedTaskList(date, todoList);
-
+    const copiedTodoList = todoList.slice(0);
+    const todoListToMap = getSortedTodoListForCurrentMonth(date, copiedTodoList);
+    
     const removeTodo = (idx) => {
-        todoList.splice(idx, 1);
-        localStorage.setItem('todos', JSON.stringify(todoList));
-        setTodoList(todoList);
+        copiedTodoList.splice(idx, 1);
+        localStorage.setItem('todos', JSON.stringify(copiedTodoList));
+        setTodoList(copiedTodoList);
     }
 
     return (
         <>
-            {todoList && todoList.map((todo, index) => (
-                <Col>
-                    <Card
-                        key={todo.id}
-                        style={{ width: 'auto' }}
-                        className="mb-2"
-                    >
-                        <Card.Header as="div"> <CloseButton aria-label="Hide" onClick={() => removeTodo(index)} /></Card.Header>
-                        <Card.Body>
-                            <Card.Title>{todo.dateAdded}</Card.Title>
-                            <Card.Text>
-                                {todo.taskAdded}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </Col>
+            {todoListToMap && todoListToMap.map((todo, index) => (
+                <Card
+                    key={todo.id}
+                    style={{ width: 'auto' }}
+                    className="mb-2"
+                >
+                    <Card.Header as="div"> <CloseButton aria-label="Hide" onClick={() => removeTodo(index)} /></Card.Header>
+                    <Card.Body>
+                        <Card.Title>{new Date(todo.dateAdded).toDateString()}</Card.Title>
+                        <Card.Text>
+                            {todo.taskAdded}
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
             ))}
         </>
     );

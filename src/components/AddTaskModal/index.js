@@ -1,24 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-import { AppContext } from "../../utils/contextStore";
-import { calendarDateFormatToInputDate } from "../../utils/contextStore";
+import { AppContext, calendarDateFormatToInputDate } from "../../utils/contextStore";
 
 const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
     const { date: calendarDateCurrentlySelected, todoList, currentDate } = useContext(AppContext);
     const [validated, setValidated] = useState(false);
-
-
-    const minValue = calendarDateFormatToInputDate(currentDate);
-    let previousTaskAddedForSelectedDate;
+    
     const inputDateCurrentlySelected = calendarDateCurrentlySelected && calendarDateFormatToInputDate(calendarDateCurrentlySelected);
-
-    useEffect(() => {
-        calculatePreviousTask();
-        setTask(previousTaskAddedForSelectedDate);
-    }, [showModal])
+    const minInputDateValue = calendarDateFormatToInputDate(currentDate);
+    let previousTaskAddedForSelectedDate;
 
     const calculatePreviousTask = () => {
         if (todoList.length > 0) {
@@ -33,26 +26,28 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
         }
     }
 
+    useEffect(() => {
+        calculatePreviousTask();
+        setTask(previousTaskAddedForSelectedDate);
+    }, [showModal])
+
     const [task, setTask] = useState(previousTaskAddedForSelectedDate);
 
     if (!showModal) {
         return null;
     }
 
-
-    const setTaskValue = (e) => {
+    const handleTaskChange = (e) => {
         setTask(e.target.value);
     }
 
-
     const handleInputDateChange = (e) => {
-        if (e.target.value <= minValue) {
+        if (e.target.value <= minInputDateValue) {
             setDate(currentDate);
         } else {
             setDate(new Date(e.target.value));
         }
     }
-
 
     const handleClose = () => onClose(false);
 
@@ -62,7 +57,6 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
             event.preventDefault();
             event.stopPropagation();
         }
-
         setValidated(true);
         saveValue();
     }
@@ -77,6 +71,7 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
                 todoList.push({ id: length + 1, dateAdded: inputDateCurrentlySelected, taskAdded: task });
             }
             localStorage.setItem('todos', JSON.stringify(todoList));
+            setValidated(false);
             setTodoList(todoList);
             onClose(false);
         }
@@ -97,7 +92,7 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
                             type="text"
                             placeholder="Enter Title"
                             value={task}
-                            onChange={setTaskValue}
+                            onChange={handleTaskChange}
                             required
                             autoFocus
                         />
@@ -108,7 +103,7 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
                         controlId="dateControl"
                     >
                         <Form.Label>Select Date</Form.Label>
-                        <Form.Control onChange={handleInputDateChange} type="date" placeholder="Select Date" value={inputDateCurrentlySelected} min={minValue} required />
+                        <Form.Control onChange={handleInputDateChange} type="date" placeholder="Select Date" value={inputDateCurrentlySelected} min={minInputDateValue} required />
                         <Form.Text className="text-muted">
                             You can't add tasks for past dates from now
                         </Form.Text>

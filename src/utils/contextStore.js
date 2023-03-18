@@ -16,7 +16,7 @@ export const If = function ({ test, children }) {
     return children;
 }
 
-export const updatedTaskList = (date, todoList, setTodoList) => {
+export const getSortedTodoListForCurrentMonth = (date, todoList) => {
     const currentSelectedDate = calendarDateFormatToInputDate(date);
     const dateParts = currentSelectedDate.split('-');
     dateParts[2] = '01';

@@ -1,17 +1,18 @@
 import { useState, useContext } from 'react';
 import CalendarContainer from 'react-calendar';
-//import 'react-calendar/dist/Calendar.css';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
+//import 'react-calendar/dist/Calendar.css';
 
-import { AppContext } from '../../utils/contextStore';
 import useWindowSize from '../../customHooks/useWindowSize';
 import * as constants from '../../constants';
+import { AppContext } from '../../utils/contextStore';
 
+import './Calendar.css';
 
 const Calendar = function ({ setDate, setShowModal }) {
-    const { date, currentDate } = useContext(AppContext);
+    const { date, todoList, currentDate } = useContext(AppContext);
     const [showCalendar, setShowCalendar] = useState(false);
     const size = useWindowSize();
 
@@ -29,14 +30,23 @@ const Calendar = function ({ setDate, setShowModal }) {
     }
 
     const handleOnActiveStartDateChange = ({ activeStartDate }) => {
-        setDate(activeStartDate);
+        if (activeStartDate >= currentDate) {
+            setDate(activeStartDate);
+        }
+    }
+
+    const highlightTile = ({ date }) => {
+        const isTaskAddedForTile = todoList.some(task => new Date(task.dateAdded).toDateString() === date.toDateString());
+        if (isTaskAddedForTile) {
+            return 'highlight';
+        }
     }
 
     const CalendarComponent = () => {
         return (
             <Card>
                 <Card.Body>
-                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} /></Card.Body>
+                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} tileClassName={highlightTile} /></Card.Body>
             </Card>
         )
     }
