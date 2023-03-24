@@ -7,11 +7,11 @@ import { AppContext, getSortedTodoListForCurrentMonth } from "../../utils/contex
 const TaskList = ({ setTodoList }) => {
     let { date, todoList } = useContext(AppContext);
 
-    const copiedTodoList = todoList.slice(0);
+    let copiedTodoList = todoList.slice(0);
     const todoListToMap = getSortedTodoListForCurrentMonth(date, copiedTodoList);
-    
-    const removeTodo = (idx) => {
-        copiedTodoList.splice(idx, 1);
+
+    const removeTodo = (dateAdded) => {
+        copiedTodoList = copiedTodoList.filter(todo => todo.dateAdded !== dateAdded);
         localStorage.setItem('todos', JSON.stringify(copiedTodoList));
         setTodoList(copiedTodoList);
     }
@@ -20,11 +20,11 @@ const TaskList = ({ setTodoList }) => {
         <>
             {todoListToMap && todoListToMap.map((todo, index) => (
                 <Card
-                    key={todo.id}
+                    key={todo.dateAdded}
                     style={{ width: 'auto' }}
                     className="mb-2"
                 >
-                    <Card.Header as="div"> <CloseButton aria-label="Hide" onClick={() => removeTodo(index)} /></Card.Header>
+                    <Card.Header as="div"> <CloseButton aria-label="Hide" onClick={() => removeTodo(todo.dateAdded)} /></Card.Header>
                     <Card.Body>
                         <Card.Title>{new Date(todo.dateAdded).toDateString()}</Card.Title>
                         <Card.Text>

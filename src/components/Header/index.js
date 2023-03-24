@@ -2,10 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 
-const Header = function ({ showModal, setShowModal }) {
-    if (showModal) {
-        return null;
-    }
+const Header = function ({ setShowModal }) {
 
     const handleClick = () => {
         setShowModal(true);

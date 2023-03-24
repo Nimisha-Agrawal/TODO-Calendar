@@ -8,7 +8,7 @@ import { AppContext, calendarDateFormatToInputDate } from "../../utils/contextSt
 const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
     const { date: calendarDateCurrentlySelected, todoList, currentDate } = useContext(AppContext);
     const [validated, setValidated] = useState(false);
-    
+
     const inputDateCurrentlySelected = calendarDateCurrentlySelected && calendarDateFormatToInputDate(calendarDateCurrentlySelected);
     const minInputDateValue = calendarDateFormatToInputDate(currentDate);
     let previousTaskAddedForSelectedDate;
@@ -63,12 +63,11 @@ const AddTaskModal = ({ showModal, onClose, setTodoList, setDate }) => {
 
     const saveValue = () => {
         if (task && inputDateCurrentlySelected) {
-            const length = todoList.length;
             const alreadyExistingTask = todoList.find(todo => todo.dateAdded === inputDateCurrentlySelected);
             if (alreadyExistingTask) {
                 alreadyExistingTask.taskAdded = task;
             } else {
-                todoList.push({ id: length + 1, dateAdded: inputDateCurrentlySelected, taskAdded: task });
+                todoList.push({ dateAdded: inputDateCurrentlySelected, taskAdded: task });
             }
             localStorage.setItem('todos', JSON.stringify(todoList));
             setValidated(false);

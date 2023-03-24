@@ -20,13 +20,13 @@ function App() {
   const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('todos') || '[]'));
   const [showModal, setShowModal] = useState(false);
   const size = useWindowSize();
-  
+
   const currentDate = new Date();
 
   return (
     <AppContext.Provider value={{ date, todoList, currentDate }}>
       <Stack gap={4}>
-        <Header showModal={showModal} setShowModal={setShowModal} />
+        <Header setShowModal={setShowModal} />
         <AddTaskModal showModal={showModal} onClose={setShowModal} setTodoList={setTodoList} setDate={setDate} />
         <Container fluid>
           <Row>

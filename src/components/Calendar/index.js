@@ -3,7 +3,7 @@ import CalendarContainer from 'react-calendar';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
-//import 'react-calendar/dist/Calendar.css';
+import 'react-calendar/dist/Calendar.css';
 
 import useWindowSize from '../../customHooks/useWindowSize';
 import * as constants from '../../constants';
@@ -46,7 +46,8 @@ const Calendar = function ({ setDate, setShowModal }) {
         return (
             <Card>
                 <Card.Body>
-                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} tileClassName={highlightTile} minDate={currentDate}/></Card.Body>
+                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} tileClassName={highlightTile} minDate={currentDate} />
+                </Card.Body>
             </Card>
         )
     }
