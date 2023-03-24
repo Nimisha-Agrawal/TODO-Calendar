@@ -46,7 +46,7 @@ const Calendar = function ({ setDate, setShowModal }) {
         return (
             <Card>
                 <Card.Body>
-                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} tileClassName={highlightTile} /></Card.Body>
+                    <CalendarContainer onChange={handleOnChange} value={date} onActiveStartDateChange={handleOnActiveStartDateChange} tileClassName={highlightTile} minDate={currentDate}/></Card.Body>
             </Card>
         )
     }
